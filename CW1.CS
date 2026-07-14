@@ -1,0 +1,457 @@
+using System.Diagnostics;
+using System.Globalization;
+using System.Runtime.CompilerServices;
+using Microsoft.VisualBasic;
+
+namespace CS0603;
+
+class CW1
+{
+  public static void Run()
+    {
+     //Main_menu2();
+     User_Input();
+      // YearlyDataAnalysis();
+    
+    static void Main_menu2()
+     {
+        
+        Console.WriteLine("Welcome to the Stock Analysis Menu");
+        Console.WriteLine("1.Yearly data analysis");
+        Console.WriteLine("2.Monthly data anaylsis");
+        Console.WriteLine("3.Exit to the Main Menu");
+       
+        }
+    
+        
+        
+        
+       
+     
+    
+        
+     
+    static void Display_Menu()
+     {
+         //The first Main menu  
+          Console.Clear();
+         Console.WriteLine("Welcome to the Main Menu :)");
+         Console.WriteLine("Select your desired function");      
+         Console.WriteLine("1.Find Minimum/Maximum of a Cubic Function"); 
+         Console.WriteLine("2.Stock Anaylysis");
+         Console.WriteLine("3.Exit");
+
+
+      }
+        
+      
+        static double GetValidDouble(string prompt, bool checkNonZero = false)
+    {
+     double number = 0.0;
+     bool isValid = false;
+
+     while(!isValid)
+     {
+        Console.Write(prompt);
+        string input = Console.ReadLine();
+
+
+        if(double.TryParse(input, out number))
+        {
+            if(checkNonZero && number == 0)
+            {
+                Console.WriteLine("The value cannot be zero. Please try again.");
+            }
+            else
+            {
+                isValid = true;
+            }
+        }
+        else
+        {
+            Console.WriteLine("Invalid input. Please try again.");
+        }
+    
+     }
+     return number;
+
+    }
+
+    static void Appendix_B()
+    { 
+    Console.Clear();
+    //Get user to input coefficients of a cubic function
+    Console.WriteLine("Please enter the coefficients of a cubic function");
+
+    double a = GetValidDouble("Enter the coefficient a : ", true);
+    double b = GetValidDouble("Enter the coefficient b: ");
+    double c = GetValidDouble("Enter the coefficient c: ");
+    double d = GetValidDouble("Enter the coefficient d: ");
+
+    double x = GetValidDouble("Enter the value of x:");
+    double value = CalculateCubic(a, b, c, d, x);
+    Console.WriteLine($"f({x}) = {value}");
+
+    FindPoints(a, b, c, d);
+    Console.WriteLine("Press any key to return to the main menu...");
+    Console.ReadKey();
+    
+    }
+    static double CalculateCubic(double a, double b, double c, double d, double x)
+    
+    {
+        return (a*Math.Pow(x,3)) + (b*Math.Pow(x,2)) + (c*x) + d;
+    }
+    static void FindPoints(double a, double b, double c, double d)
+    {
+        double A = 3 * a;
+        double B = 2 * b;   
+        double C = c;
+        double discriminant = Math.Round (Math.Pow(B, 2) - 4 * A * C,2);
+
+        Console.WriteLine("\nSearching for critical points...");
+        if(discriminant > 0)
+        {
+            double xRoot1 = Math.Round((-B + Math.Sqrt(discriminant)) / (2 * A),2);
+            double xRoot2 = Math.Round ((-B - Math.Sqrt(discriminant)) / (2 * A),2);
+
+            Console.WriteLine($"The critical points are x1 = {xRoot1:F2}, and x2 = {xRoot2:F2}");
+            CheckMinMax(a, b, c, d, xRoot1);
+            CheckMinMax(a, b, c, d, xRoot2);
+            CheckMinMaxOrInflection(a, b, c, d, xRoot1);
+            CheckMinMaxOrInflection(a, b, c, d, xRoot2);
+            
+        }
+        else if (discriminant ==0)
+        {
+            double xRoot = Math.Round(-B/(2*A),2);
+            Console.WriteLine($"One critical point is x = {xRoot:F2}");
+            CheckMinMaxOrInflection(a, b, c, d, xRoot);
+
+        }
+        else   
+        {
+            Console.WriteLine("No minimum/maximum can be found");
+        }
+    }
+    static void CheckMinMax(double a, double b, double c, double d, double x)
+    {
+        double fValue = Math.Round(CalculateCubic(a, b, c, d, x),2);
+        double fDoublePrime = Math.Round(6 * a * x + 2 * b,2);
+
+
+        if(fDoublePrime > 0)
+        {
+            Console.WriteLine($"f({x:2}) = {fValue:F2} is a local minimum");
+        }
+        else if(fDoublePrime < 0)
+        {
+            Console.WriteLine($"f({x:F2}) = {fValue:F2} is a local maximum");
+        }
+        else
+        {
+            Console.WriteLine($"f({x:F2}) = {fValue:F2} is a point of inflection");
+        }
+    }
+    static void CheckMinMaxOrInflection(double a, double b, double c, double d, double x)
+    {
+        double fvalue = CalculateCubic(a, b, c, d, x);
+
+        double fDoublePrime =  6 * a * x + 2 * b;
+        if(fDoublePrime > 0)
+        {
+          Console.WriteLine($"The minimum is at (X = {x:F2}, f(X) = {fvalue:F2})");
+
+        }
+        else if(fDoublePrime < 0)
+        {
+            Console.WriteLine($"The maximum is at (X = {x:F2}, f(X) = {fvalue:F2})");
+        }
+        else
+        {
+            Console.WriteLine($"The function might have an inflection point at (X ={x:F2}, f(X) = {fvalue:F2})");
+    }
+  
+    static double GetValidDouble(string prompt, bool checkNonZero = false)
+    {
+     double number = 0.0;
+     bool isValid = false;
+
+     while(!isValid)
+     {
+        Console.Write(prompt);
+        string input = Console.ReadLine();
+
+
+        if(double.TryParse(input, out number))
+        {
+            if(checkNonZero && number == 0)
+            {
+                Console.WriteLine("The value cannot be zero. Please try again.");
+            }
+            else
+            {
+                isValid = true;
+            }
+        }
+        else
+        {
+            Console.WriteLine("Invalid input. Please try again.");
+        }
+    
+     }
+     return number;
+
+    }
+
+    }
+
+      static void User_Input()
+    {
+       while(true)
+       {
+         Display_Menu();
+         string input = Console.ReadLine();
+         switch(input)
+        {
+            case "1":
+            Console.WriteLine("You have selected Find the minimum/maximum of a cubic function");
+            Appendix_B();
+            
+            
+            //call Min/max cubic function
+            break;
+            case "2":
+            Console.WriteLine("You have selected Stock Analysis");
+            User_Input2();
+            //Call Stock analysis
+            break;
+            case "3":
+            WaitForKeyPressFinalExit();
+            //exit the menu
+            return;
+            default:
+            Console.WriteLine("Invalid input press any key to continue");
+            Console.ReadKey();
+            break;
+
+
+
+        }
+       } 
+       static void WaitForKeyPress()
+    {
+      Console.WriteLine("Press any key to return to the main menu...");
+      Console.ReadKey();
+      Console.Clear();
+    }
+    }
+    static void User_Input2()
+    {   Console.Clear();
+         while(true)
+
+       {
+         Main_menu2();
+         string input2 = Console.ReadLine();
+         switch(input2)
+        {
+           case "1":
+                  Call_File();
+                  WaitForKeyPress2();
+                    break;
+                case "2":
+                    var dataTradeList = ReadDataTrade("AMD.csv");
+                    MonthlyDAnanlysis_UserInput(dataTradeList);
+                    WaitForKeyPress2();
+                   
+                    break;
+                case "3":WaitForKeyPressFinalExit();
+                    return;
+            default:
+            Console.WriteLine("Invalid input press any key to continue");
+            Console.ReadKey();
+            Console.Clear();
+            break;
+    }
+}
+    }
+     static void WaitForKeyPress2()
+    {
+      Console.WriteLine("Press any key to return to the main menu...");
+      Console.ReadKey();
+      Console.Clear();
+    }
+    
+
+}
+public class tradeinfo()
+{
+public DateTime Date { get; set; }
+public double   Open{ get; set; }
+public double   High { get; set;}
+public double   Low  {get; set;}
+public double   Close {get; set;}
+public  long    Volume{get; set;}
+
+
+}
+public static void Call_File ()
+{
+    string Filepathway = "AMD.csv";
+    List<tradeinfo> DataTradeList = ReadDataTrade(Filepathway);
+    
+    foreach(var data in DataTradeList.Take(0))
+    {
+            Console.WriteLine($"{data.Date:dd/MM/yyyy} - Open: {data.Open,7:F2}, High:{data.High,7:F2}, Low:{data.Low,7:F2} Close: {data.Close,7:F2}, Volume: {data.Volume,10}");
+    }
+    
+}
+public static List<tradeinfo> ReadDataTrade(string Filepathway)
+{
+List<tradeinfo> DataTradeList = new List<tradeinfo>();
+try
+{
+ using(var reader = new StreamReader(Filepathway))
+ {
+    Console.Clear();
+    //string headerLine = reader.ReadLine();
+    while(!reader.EndOfStream)
+    {
+        string line = reader.ReadLine();
+        var values = line.Split(',');
+        if (values.Length == 6)
+        {
+          tradeinfo data = new tradeinfo
+            {
+                Date = DateTime.ParseExact(values[0], "dd/MM/yyyy", CultureInfo.InvariantCulture),
+                Open = double.Parse(values[1]),
+                High = double.Parse(values[2]),
+                Low  = double.Parse(values[3]),
+                Close = double.Parse(values[4]),
+                Volume = long.Parse(values[5]) 
+                
+            };
+            DataTradeList.Add(data);
+        }
+
+    }
+ }
+
+if(DataTradeList.Count > 0)
+{
+ Console.Clear();
+//This is for the opening and closing prices of the market   
+double openingPrice = DataTradeList.First().Open;
+double closingPrice = DataTradeList.Last().Close;
+//This helps to find the price range of the trades
+double minPrice = DataTradeList.Min(d => d.Low);
+double maxPrice = DataTradeList.Max(d => d.High);
+//Finds Date with the Largest Volume
+var highestVolumeData = DataTradeList.OrderByDescending(d => d.Volume).First();
+int highestVolumeIndex = DataTradeList.IndexOf(highestVolumeData);
+
+double prevClose = (highestVolumeIndex > 0) ? DataTradeList[highestVolumeIndex-1].Close:highestVolumeData.Close;
+double priceChangePercent = (prevClose !=0) ? (highestVolumeData.Close-prevClose)/prevClose*100: 0;
+int totalDays = DataTradeList.Count;
+
+
+
+Console.WriteLine("=== Trading Summary Of The Year ===");
+Console.WriteLine($"Total number of trading days:{totalDays}");
+Console.WriteLine($"Opening price first trading day:{openingPrice:F2}");
+Console.WriteLine($"Closing price of last trading day:{closingPrice:F2}");
+Console.WriteLine($"Trading price range: {minPrice:F2} - {maxPrice:F2}");
+Console.WriteLine($"Date with highest trading volume:{highestVolumeData.Date:dd/MM/yyyy},closing price change from the trading day before:{priceChangePercent:F2}%");
+
+
+}
+else
+{
+    Console.WriteLine("No data is available");
+}
+}
+
+catch
+{
+    Console.WriteLine($"Unable to read file");
+}
+return DataTradeList;
+
+}
+
+public static void MonthlyDAnanlysis_UserInput(List<tradeinfo>DataTradeList)
+{
+Console.Clear();
+Console.WriteLine("Choose the Month you would like to Analyse");
+Console.WriteLine("1.January");
+Console.WriteLine("2.May");
+Console.WriteLine("3.December");
+string Months = Console.ReadLine();
+int ChosenMonth = 0;
+switch(Months)
+{
+    case "1":
+    ChosenMonth = 1; //Function to January
+    break;
+    case "2":
+    ChosenMonth = 5; //Function to call May
+    break;
+    case "3":
+    ChosenMonth = 12; //Function to call December 
+    break;
+default:
+    WaitForKeyPress();  
+    var dataTradeList = ReadDataTrade("AMD.csv);");
+                    MonthlyDAnanlysis_UserInput(dataTradeList);
+     
+     break;
+
+    
+    
+
+
+}
+var ChosenMonthData = DataTradeList.Where(d => d.Date.Month == ChosenMonth).ToList();
+{
+
+if(ChosenMonthData.Count == 0)
+{
+    Console.WriteLine("Unable to find any trading data which is available for the chosen month.");
+    var dataTradeList = ReadDataTrade("AMD.csv");
+     MonthlyDAnanlysis_UserInput(dataTradeList);
+    return;
+}
+//Will help produce the data required
+double openingPrice = ChosenMonthData.First().Open;
+double closingPrice = ChosenMonthData.Last ().Close;
+double minPrice     = ChosenMonthData.Min(d=> d.Low);
+double maxPrice     = ChosenMonthData.Max(d => d.High);
+var highestVolumeData = ChosenMonthData.OrderByDescending(d => d.Volume).First();
+
+//Final display of the data for the user
+Console.WriteLine($"\n=== Summary of Trades for {ChosenMonthData.First().Date.ToString("MMMM")} === ");
+Console.WriteLine($"Opening price:{openingPrice:F2}");
+Console.WriteLine($"Closing price:{closingPrice:F2}");
+Console.WriteLine($"Trading price range:{maxPrice:F2}-{minPrice:F2}");
+Console.WriteLine($"Highest trading volumne date: {highestVolumeData.Date:dd//MM/yyyy}");
+}
+static void WaitForKeyPress()
+    {
+      Console.WriteLine("Invalid input please try again");
+      Console.ReadKey();
+      Console.Clear();
+    }
+}
+
+static void WaitForKeyPressFinalExit()
+{
+ Console.WriteLine("Press any key to exit program");
+      Console.ReadKey();
+      Console.Clear();
+}
+}
+
+
+         
+             
+          
